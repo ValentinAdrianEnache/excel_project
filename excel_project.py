@@ -11,42 +11,37 @@ from tkinter import *
 from datetime import datetime
 import openpyxl
 
-FILE1=''
-FILE2=''
+# GUI
+WINDOW = tk.Tk()
+WINDOW.title('AppX v1.0')
+WINDOW.geometry("1000x550")
+WINDOW.configure(background="#1D6F42")
+background_text = Label(WINDOW,
+                        text='KEEP\nCALM\nIT' + "'" + 'S JUST AN\nEXCEL\nFILE',
+                        bg='#1D6F42',
+                        font=("Arial", 35, "bold"),
+                        fg="white")
+background_text.pack()
+background_text.place(x=20, y=85)
+
+FILE1 = ''
+FILE2 = ''
 FILE3 = 'date_hour.xlsx'
 
 WB = openpyxl.load_workbook(FILE3)
 SHEET = WB.active
 
 
-#GUI
-WINDOW = tk.Tk()
-WINDOW.title('AppX v1.0')
-WINDOW.geometry("1000x550")
-WINDOW.configure(background="#1D6F42")
-background_text=Label(WINDOW,text='KEEP\nCALM\nIT'+"'"+'S JUST AN\nEXCEL\nFILE',
-           bg='#1D6F42',
-           font=("Arial", 35, "bold"),
-           fg="white")
-background_text.pack()
-background_text.place(x=20, y=85)
-
-
-# click_btn= PhotoImage(file='browse.png')
-
 BUTON_FILE_1 = tk.Button(
-    # image=click_btn,
     text="Load",
-    # width=180,
     width=15,
-    # height=100,
     height=3,
     font=("Arial", 15, "bold"),
     bg='#abf77e',
     fg="black",
 )
 BUTON_FILE_1.pack()
-BUTON_FILE_1.place(x=450,y=20)
+BUTON_FILE_1.place(x=450, y=20)
 
 BUTON_FILE_2 = tk.Button(
     text="Report",
@@ -57,7 +52,7 @@ BUTON_FILE_2 = tk.Button(
     fg="black",
 )
 BUTON_FILE_2.pack()
-BUTON_FILE_2.place(x=550,y=120)
+BUTON_FILE_2.place(x=550, y=120)
 
 BUTON_EXECUTION = tk.Button(
     text="Execute",
@@ -68,7 +63,7 @@ BUTON_EXECUTION = tk.Button(
     fg="black",
 )
 BUTON_EXECUTION.pack()
-BUTON_EXECUTION.place(x=450,y=220)
+BUTON_EXECUTION.place(x=450, y=220)
 
 BUTON_DATE_RECORDER = tk.Button(
     text="Rec",
@@ -79,7 +74,7 @@ BUTON_DATE_RECORDER = tk.Button(
     fg="black",
 )
 BUTON_DATE_RECORDER.pack()
-BUTON_DATE_RECORDER.place(x=550,y=320)
+BUTON_DATE_RECORDER.place(x=550, y=320)
 
 BUTON_RESET_DATA = tk.Button(
     text="Delete",
@@ -90,7 +85,7 @@ BUTON_RESET_DATA = tk.Button(
     fg="black",
 )
 BUTON_RESET_DATA.pack()
-BUTON_RESET_DATA.place(x=450,y=420)
+BUTON_RESET_DATA.place(x=450, y=420)
 
 
 def file_1(event):
@@ -102,8 +97,7 @@ def file_1(event):
     FILE1 = askopenfilename(
         filetypes=[('text', '*.xlsx'), ('all files', '*.*')]
     )
-    print(FILE1,' loaded!')
-
+    print(FILE1, ' loaded!')
 
 
 def file_2(event):
@@ -115,7 +109,8 @@ def file_2(event):
     FILE2 = askopenfilename(
         filetypes=[('text', '*.xlsx'), ('all files', '*.*')]
     )
-    print(FILE2,' loaded!')
+    print(FILE2, ' loaded!')
+
 
 def execute(event):
     """
@@ -166,6 +161,7 @@ def execute(event):
     print('Report has been created! Report path: ', FILE2)
     WB.save(FILE2)
 
+
 def range_letter(start, stop):
     """
     :param start: first letter
@@ -173,6 +169,7 @@ def range_letter(start, stop):
     :return: range
     """
     return (chr(n) for n in range(ord(start), ord(stop) + 1))
+
 
 def date_recorder(event):
     """
@@ -214,12 +211,13 @@ def date_recorder(event):
             SHEET[hour_cell[count]].value = hour_now
             SHEET[numero_cell[count]].value = str(count) + '.'
             print('Values has been recorded!')
-            deg_reg() #write temperature data
+            deg_reg()  # write temperature data
             break
         else:
             print(f'Please wait {wait_sec - int(delta)} seconds until the next record! ')
             break
     WB.save(FILE3)
+
 
 def reset_data(event):
     """
@@ -231,7 +229,7 @@ def reset_data(event):
     WB = openpyxl.load_workbook(FILE3)
     SHEET = WB.active
     # delete columns
-    for i in range(4):  #using for loop with range(4) to delete column one four times
+    for i in range(4):  # using for loop with range(4) to delete column 1 four times
         SHEET.delete_cols(1)  # when deleted column 1 it's been replaced with column 2 and so on
     # write
     numero = SHEET.cell(row=1, column=1)
@@ -266,8 +264,6 @@ def reset_data(event):
     print('Data has been deleted!')
 
 
-
-
 def deg_reg():
     """
     :return: temperature data
@@ -294,4 +290,3 @@ BUTON_EXECUTION.bind("<Button-1>", execute)
 BUTON_RESET_DATA.bind("<Button-1>", reset_data)
 BUTON_DATE_RECORDER.bind("<Button-1>", date_recorder)
 WINDOW.mainloop()
-
