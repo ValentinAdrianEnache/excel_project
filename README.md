@@ -3,7 +3,7 @@
 
 2. Project Description:
     -It is based on a Python script.
-    -It can be use to import data from two excel files to one file.
+    -It can be used to import data from two excel files to one file.
     -Module and packeges used in this project:
         -datetime
         -time

@@ -1,36 +1,25 @@
 """
 Excel automation project
 """
-
-import datetime
 import time
 import tkinter as tk
 import random
 from tkinter.filedialog import askopenfilename
-from tkinter import *
 from datetime import datetime
 import openpyxl
+from tkinter.tix import *
 
 # GUI
-WINDOW = tk.Tk()
+WINDOW = Tk()
 WINDOW.title('AppX v1.0')
 WINDOW.geometry("1000x550")
 WINDOW.configure(background="#1D6F42")
-background_text = Label(WINDOW,
-                        text='KEEP\nCALM\nIT' + "'" + 'S JUST AN\nEXCEL\nFILE',
-                        bg='#1D6F42',
-                        font=("Arial", 35, "bold"),
-                        fg="white")
-background_text.pack()
+background_text = tk.Label(WINDOW,
+                           text='KEEP\nCALM\nIT' + "'" + 'S JUST AN\nEXCEL\nFILE',
+                           bg='#1D6F42',
+                           font=("Arial", 35, "bold"),
+                           fg="white")
 background_text.place(x=20, y=85)
-
-FILE1 = ''
-FILE2 = ''
-FILE3 = 'date_hour.xlsx'
-
-WB = openpyxl.load_workbook(FILE3)
-SHEET = WB.active
-
 
 BUTON_FILE_1 = tk.Button(
     text="Load",
@@ -38,10 +27,11 @@ BUTON_FILE_1 = tk.Button(
     height=3,
     font=("Arial", 15, "bold"),
     bg='#abf77e',
-    fg="black",
-)
-BUTON_FILE_1.pack()
+    fg="black")
 BUTON_FILE_1.place(x=450, y=20)
+tip = Balloon()
+tip.bind_widget(BUTON_FILE_1,
+                balloonmsg="Load source file")
 
 BUTON_FILE_2 = tk.Button(
     text="Report",
@@ -49,44 +39,51 @@ BUTON_FILE_2 = tk.Button(
     height=3,
     font=("Arial", 15, "bold"),
     bg="#abf77e",
-    fg="black",
-)
-BUTON_FILE_2.pack()
+    fg="black")
 BUTON_FILE_2.place(x=550, y=120)
-
-BUTON_EXECUTION = tk.Button(
-    text="Execute",
-    width=15,
-    height=3,
-    font=("Arial", 15, "bold"),
-    bg="#abf77e",
-    fg="black",
-)
-BUTON_EXECUTION.pack()
-BUTON_EXECUTION.place(x=450, y=220)
+tip.bind_widget(BUTON_FILE_2,
+                balloonmsg="Load report")
 
 BUTON_DATE_RECORDER = tk.Button(
     text="Rec",
     width=15,
     height=3,
     font=("Arial", 15, "bold"),
+    bg="#abf77e",
+    fg="black")
+BUTON_DATE_RECORDER.place(x=450, y=220)
+tip.bind_widget(BUTON_DATE_RECORDER,
+                balloonmsg="Register data")
+
+BUTON_EXECUTION = tk.Button(
+    text="Execute",
+    width=15,
+    height=3,
+    font=("Arial", 15, "bold"),
     bg="#3EB489",
-    fg="black",
-)
-BUTON_DATE_RECORDER.pack()
-BUTON_DATE_RECORDER.place(x=550, y=320)
+    fg="black")
+BUTON_EXECUTION.place(x=550, y=320)
+tip.bind_widget(BUTON_EXECUTION,
+                balloonmsg="Run")
+
 
 BUTON_RESET_DATA = tk.Button(
     text="Delete",
     width=15,
     height=3,
     font=("Arial", 15, "bold"),
-    bg="#a80505",
-    fg="black",
-)
-BUTON_RESET_DATA.pack()
+    bg="#E00201",
+    fg="black")
 BUTON_RESET_DATA.place(x=450, y=420)
+tip.bind_widget(BUTON_RESET_DATA,
+                balloonmsg="Reset data")
 
+FILE1 = None
+FILE2 = None
+FILE3 = 'date_hour.xlsx'
+
+WB = openpyxl.load_workbook(FILE3)
+SHEET = WB.active
 
 def file_1(event):
     """
@@ -95,8 +92,7 @@ def file_1(event):
     """
     global FILE1
     FILE1 = askopenfilename(
-        filetypes=[('text', '*.xlsx'), ('all files', '*.*')]
-    )
+        filetypes=[('FILE1', 'source_file.xlsx'),('all files', '*.*')])
     print(FILE1, ' loaded!')
 
 
@@ -107,10 +103,8 @@ def file_2(event):
         """
     global FILE2
     FILE2 = askopenfilename(
-        filetypes=[('text', '*.xlsx'), ('all files', '*.*')]
-    )
+        filetypes=[('FILE2', 'report.xlsx'),('all files', '*.*')])
     print(FILE2, ' loaded!')
-
 
 def execute(event):
     """
