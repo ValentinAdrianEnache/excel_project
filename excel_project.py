@@ -273,7 +273,7 @@ def deg_reg():
         count += 1
         if SHEET[i].value is None:
             SHEET[i].value = str(count) + '.'
-            SHEET[degree_cell[count]].value = str(degree) + '°'
+            SHEET[degree_cell[count]].value = str(degree)
             break
     WB.save(FILE1)
 
