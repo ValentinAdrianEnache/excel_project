@@ -36,6 +36,10 @@
        Team: Mihai Husea & Valentin Enache
 
 7. Include Tests
-    -the test script is named main_functions_test.py
+    -the test scripts are named: main_functions_test.py ,reset_data_test.py
     -the main functions of this  app has been tested by using unittest framework
+
+
+
+
 
