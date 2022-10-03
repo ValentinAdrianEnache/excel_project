@@ -161,12 +161,13 @@ def deg_reg():
     degree = random.randint(18, 22)
     numero_cell = ['A' + str(i) for i in range(1, 22)]
     degree_cell = ['B' + str(i) for i in range(1, 22)]
+
     count = 0
     for i in numero_cell[1:21]:
         count += 1
         if SHEET[i].value is None:
             SHEET[i].value = str(count) + '.'
-            SHEET[degree_cell[count]].value = str(degree)
+            SHEET[degree_cell[count]].value = int(degree)
             break
     WB.save(FILE1)
 
@@ -189,11 +190,23 @@ def execute(event):
     SHEET = WB.active
     no_list = []
     t_list = []
+    nominal_list = []
+    l_tol_list = []
+    u_tol_list = []
+
     for i in range(1, 22):
         no_cell = SHEET['A' + str(i)].value
         no_list.append(no_cell)
         temp_cell = SHEET['B' + str(i)].value
         t_list.append(temp_cell)
+        if temp_cell is not None:
+            nominal_list.append(20)
+            l_tol_list.append(18)
+            u_tol_list.append(22)
+        else:
+            nominal_list.append(None)
+            l_tol_list.append(None)
+            u_tol_list.append(None)
     # load and read from FILE3
     WB = openpyxl.load_workbook(FILE3)
     SHEET = WB.active
@@ -206,13 +219,17 @@ def execute(event):
         d_list.append(date_cell)
 
     # write report
-    line_2 = [str(i) + '2' for i in range_letter("A", "Z")]
-    line_3 = [str(i) + '3' for i in range_letter("A", "Z")]
-    line_4 = [str(i) + '4' for i in range_letter("A", "Z")]
-    line_5 = [str(i) + '5' for i in range_letter("A", "Z")]
+    line_no = [str(i) + '2' for i in range_letter("A", "Z")]
+    line_temp = [str(i) + '3' for i in range_letter("A", "Z")]
+    line_hour = [str(i) + '4' for i in range_letter("A", "Z")]
+    line_date = [str(i) + '5' for i in range_letter("A", "Z")]
+    nominal_line = [str(i) + '8' for i in range_letter("A", "Z")]
+    l_tol_line = [str(i) + '9' for i in range_letter("A", "Z")]
+    u_tol_line = [str(i) + '10' for i in range_letter("A", "Z")]
 
     WB = openpyxl.load_workbook(FILE2)
     SHEET = WB.active
+
 
     for i in range(21):
         # start_no_list= start index for each list
@@ -220,12 +237,19 @@ def execute(event):
         start_t_list = t_list[i]
         start_h_list = h_list[i]
         start_d_list = d_list[i]
+        start_nom_list = nominal_list[i]
+        start_l_tol_list = l_tol_list[i]
+        start_u_tol_list = u_tol_list[i]
 
-        SHEET[line_2[i]].value = start_no_list
-        SHEET[line_3[i]].value = start_t_list
-        SHEET[line_4[i]].value = start_h_list
-        SHEET[line_5[i]].value = start_d_list
 
+        SHEET[line_no[i]].value = start_no_list
+        SHEET[line_temp[i]].value = start_t_list
+        SHEET[line_hour[i]].value = start_h_list
+        SHEET[line_date[i]].value = start_d_list
+        if i >= 1:
+            SHEET[nominal_line[i]].value = start_nom_list
+            SHEET[u_tol_line[i]].value = start_l_tol_list
+            SHEET[l_tol_line[i]].value = start_u_tol_list
     print('Report has been created! Report path: ', FILE2)
     WB.save(FILE2)
 
